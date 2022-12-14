@@ -34,6 +34,7 @@ class Student:
             return
         return self.avg_grades() < other.avg_grades()
 
+
 class Mentor:
     def __init__(self, name, surname):
         self.name = name
@@ -51,7 +52,6 @@ class Lecturer(Mentor):
     def avg_grades(self):
         avg = sum(sum(self.grades.values(), [])) / len(sum(self.grades.values(), []))
         return avg
-
 
     def __str__(self):
         return f'Имя: {self.name}\n' \
@@ -112,7 +112,7 @@ some_student.courses_in_progress += ['Python']
 some_student.courses_in_progress += ['Math']
 some_student.finished_courses += ['Git']
 some_student.rate_lecturer(some_lecturer, 'Math', 9)
-some_student.rate_lecturer(some_lecturer, '', 6)
+some_student.rate_lecturer(some_lecturer, 'Python', 6)
 
 some_reviewer = Reviewer('Ted', 'Jones')
 some_reviewer.courses_attached += ['Python']
@@ -134,7 +134,7 @@ some_student2.courses_in_progress += ['Python']
 some_student2.courses_in_progress += ['Math']
 some_student2.finished_courses += ['Git']
 some_student2.rate_lecturer(some_lecturer2, 'Math', 5)
-some_student2.rate_lecturer(some_lecturer2, '', 9)
+some_student2.rate_lecturer(some_lecturer2, 'Python', 9)
 
 some_reviewer2 = Reviewer('Paul', 'Gordon')
 some_reviewer2.courses_attached += ['Python']
@@ -146,5 +146,32 @@ print(f'Ревьюер\n{some_reviewer2}')
 print(f'Лектор\n{some_lecturer2}')
 print(f'Студент\n{some_student2}')
 
-print(some_student < some_student2)
-print(some_lecturer < some_lecturer2)
+print(f'3.2 Студенты: у Джека оценки лучше чем у Роберта? {some_student < some_student2}')
+print(f'3.2 Лекторы: у Алекса оценки лучше чем у Мишель? {some_lecturer < some_lecturer2}')
+
+students_list = [some_student, some_student2]
+lecturer_list = [some_lecturer, some_lecturer2]
+
+def students_ratings(students_list, course):
+    sum_all = 0
+    count_all = []
+    for student in students_list:
+        for key, values in student.grades.items():
+            if key == course:
+                sum_all += sum(values)
+                count_all.extend('1')
+    return sum_all/len(count_all)
+
+print(f"4.1 Средняя оценка за домашнее задание: {students_ratings(students_list, 'Python')}")
+
+def lecturer_ratings(lecturer_list, course):
+    sum_all = 0
+    count_all = []
+    for lecturer in lecturer_list:
+        for key, values in lecturer.grades.items():
+            if key == course:
+                sum_all += sum(values)
+                count_all.extend('1')
+    return sum_all/len(count_all)
+
+print(f"4.2 Средняя оценка за лекции: {lecturer_ratings(lecturer_list, 'Math')}")
