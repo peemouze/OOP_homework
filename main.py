@@ -28,6 +28,11 @@ class Student:
                f"Курсы в процессе изучения: {', '.join(self.courses_in_progress)}\n" \
                f"Завершенные курсы: {', '.join(self.finished_courses)}"
 
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print('Not a Student!')
+            return
+        return self.avg_grades() < other.avg_grades()
 
 class Mentor:
     def __init__(self, name, surname):
@@ -52,6 +57,12 @@ class Lecturer(Mentor):
         return f'Имя: {self.name}\n' \
                f'Фамилия: {self.surname}\n' \
                f'Средняя оценка за лекции: {self.avg_grades()}'
+
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            print('Not a Lecturer!')
+            return
+        return self.avg_grades() < other.avg_grades()
 
 
 class Reviewer(Mentor):
@@ -112,3 +123,28 @@ some_reviewer.rate_hw(some_student, 'Math', 4)
 print(f'Ревьюер\n{some_reviewer}')
 print(f'Лектор\n{some_lecturer}')
 print(f'Студент\n{some_student}')
+
+some_lecturer2 = Lecturer('Michelle', 'Young')
+some_lecturer2.courses_attached += ['Math']
+some_lecturer2.courses_attached += ['Python']
+some_lecturer2.courses_attached += ['Git']
+
+some_student2 = Student('Robert', 'Henderson', 'male')
+some_student2.courses_in_progress += ['Python']
+some_student2.courses_in_progress += ['Math']
+some_student2.finished_courses += ['Git']
+some_student2.rate_lecturer(some_lecturer2, 'Math', 5)
+some_student2.rate_lecturer(some_lecturer2, '', 9)
+
+some_reviewer2 = Reviewer('Paul', 'Gordon')
+some_reviewer2.courses_attached += ['Python']
+some_reviewer2.courses_attached += ['Math']
+some_reviewer2.rate_hw(some_student2, 'Python', 5)
+some_reviewer2.rate_hw(some_student2, 'Math', 4)
+
+print(f'Ревьюер\n{some_reviewer2}')
+print(f'Лектор\n{some_lecturer2}')
+print(f'Студент\n{some_student2}')
+
+print(some_student < some_student2)
+print(some_lecturer < some_lecturer2)
